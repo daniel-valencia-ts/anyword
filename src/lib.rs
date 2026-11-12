@@ -1,3 +1,7 @@
+//! Randomly get words from the default list or an external file.
+
+pub mod dictionary;
+
 pub fn add(left: u64, right: u64) -> u64 {
     left + right
 }
