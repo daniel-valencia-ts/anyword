@@ -3,6 +3,10 @@ name = "anyword"
 version = "0.1.0"
 edition = "2024"
 
+[features]
+defaultdicts = []
+english = ["defaultdicts"]
+
 [dependencies]
 rand = "0.10.3"
 serde = "1.0.229"
