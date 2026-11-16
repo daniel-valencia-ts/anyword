@@ -1,9 +1,8 @@
+use crate::DictionaryError;
 use crate::rng;
-use crate::utils;
-use crate::utils::DictionaryError;
 use std::collections::HashMap;
 
-type Result<T> = std::result::Result<T, utils::DictionaryError>;
+type Result<T> = std::result::Result<T, DictionaryError>;
 
 /// A collection of words separated based on their length.
 #[derive(Debug, PartialEq)]

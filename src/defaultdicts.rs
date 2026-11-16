@@ -1,6 +1,6 @@
 use crate::dictionary::WordsDictionary;
 use crate::utils::deserialize_json;
-type Result<T> = std::result::Result<T, crate::utils::Error>;
+type Result<T> = std::result::Result<T, crate::Error>;
 
 #[cfg(feature = "english")]
 mod english {
