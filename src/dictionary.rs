@@ -4,10 +4,9 @@ use std::collections::HashMap;
 
 type Result<T> = std::result::Result<T, DictionaryError>;
 
-/// A collection of words separated based on their length.
 #[derive(Debug, PartialEq)]
 pub struct WordsDictionary {
-    pub words: HashMap<usize, Vec<String>>,
+    words: HashMap<usize, Vec<String>>,
 }
 
 impl WordsDictionary {

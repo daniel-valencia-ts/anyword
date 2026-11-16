@@ -37,8 +37,8 @@
 pub mod defaultdicts;
 mod dictionary;
 mod error;
-pub mod rng;
-pub mod utils;
+mod rng;
+mod utils;
 
 pub use dictionary::*;
 pub use error::*;

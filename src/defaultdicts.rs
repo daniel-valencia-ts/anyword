@@ -3,7 +3,7 @@ use crate::utils::deserialize_json;
 type Result<T> = std::result::Result<T, crate::Error>;
 
 #[cfg(feature = "english")]
-mod english {
+pub mod english {
     use super::*;
 
     pub fn get_dict() -> Result<WordsDictionary> {
@@ -15,7 +15,7 @@ mod english {
 }
 
 #[cfg(feature = "spanish")]
-mod spanish {
+pub mod spanish {
     use super::*;
 
     pub fn get_dict() -> Result<WordsDictionary> {
