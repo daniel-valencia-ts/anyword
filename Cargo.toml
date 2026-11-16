@@ -6,6 +6,7 @@ edition = "2024"
 [features]
 defaultdicts = []
 english = ["defaultdicts"]
+spanish = ["defaultdicts"]
 
 [dependencies]
 rand = "0.10.3"
