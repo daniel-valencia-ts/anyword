@@ -64,15 +64,59 @@ impl From<serde_json::error::Error> for DeserializationError {
     }
 }
 
+#[derive(Debug)]
+pub enum Error {
+    DictionaryError(DictionaryError),
+    DeserializationError(DeserializationError),
+}
+
+impl fmt::Display for Error {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Error::DictionaryError(..) => {
+                write!(f, "an error with dictionaries took place")
+            }
+            Error::DeserializationError(..) => {
+                write!(f, "a deserialization error took place")
+            }
+        }
+    }
+}
+
+impl error::Error for Error {
+    fn source(&self) -> Option<&(dyn error::Error + 'static)> {
+        match self {
+            Error::DictionaryError(e) => Some(e),
+            Error::DeserializationError(e) => Some(e),
+        }
+    }
+}
+
+impl From<DictionaryError> for Error {
+    fn from(err: DictionaryError) -> Error {
+        Error::DictionaryError(err)
+    }
+}
+
+impl From<DeserializationError> for Error {
+    fn from(err: DeserializationError) -> Error {
+        Error::DeserializationError(err)
+    }
+}
+
 pub fn get_strings_from_file(path: PathBuf) -> Result<Vec<String>, DeserializationError> {
     let mut file = File::open(path)?;
     let mut file_content = String::new();
     let result: Result<usize, std::io::Error> = file.read_to_string(&mut file_content);
     match result {
-        Ok(_) => match from_str::<Vec<String>>(&file_content) {
-            Ok(vector) => Ok(vector),
-            Err(error) => Err(error.into()),
-        },
+        Ok(_) => deserialize_json(&file_content),
         Err(error) => return Err(error.into()),
+    }
+}
+
+pub fn deserialize_json(raw: &str) -> Result<Vec<String>, DeserializationError> {
+    match from_str::<Vec<String>>(raw) {
+        Ok(vector) => Ok(vector),
+        Err(error) => Err(error.into()),
     }
 }
