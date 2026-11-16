@@ -4,12 +4,14 @@ use std::collections::HashMap;
 
 type Result<T> = std::result::Result<T, DictionaryError>;
 
+/// A struct that stores words grouped by their length.
 #[derive(Debug, PartialEq)]
 pub struct WordsDictionary {
     words: HashMap<usize, Vec<String>>,
 }
 
 impl WordsDictionary {
+    /// Create a new dictionary with the supplied list of words.
     pub fn new(raw_words: Vec<String>) -> Result<Self> {
         if raw_words.len() == 0 {
             return Err(DictionaryError::EmptyVec);
@@ -38,7 +40,8 @@ impl WordsDictionary {
         }
     }
 
-    /// Get any word from the dictionary with a random length and index.
+    /// Get any word from the dictionary with a randomly generated
+    /// length and index.
     pub fn get_random(&self) -> Result<String> {
         let lengths: Vec<usize> = self.words.keys().copied().collect();
         if let Some(rand_len) = rng::from_values(&lengths) {
@@ -51,7 +54,8 @@ impl WordsDictionary {
         }
     }
 
-    /// Get a word from the dictionary that matches the given length.
+    /// Get any word from the dictionary that matches the provided length
+    /// with a randomly generated index.
     pub fn get_random_with_len(&self, len: usize) -> Result<String> {
         self.get(len, rng::in_range(self.words.get(&len).unwrap().len()))
     }

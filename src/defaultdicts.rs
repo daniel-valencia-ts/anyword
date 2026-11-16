@@ -1,3 +1,4 @@
+//! Define built-in lists of words in several languages.
 use crate::WordsDictionary;
 use crate::utils::deserialize_json;
 type Result<T> = std::result::Result<T, crate::Error>;
@@ -6,6 +7,7 @@ type Result<T> = std::result::Result<T, crate::Error>;
 pub mod english {
     use super::*;
 
+    /// Build a 2048-word WordsDictionary of English words.
     pub fn get_dict() -> Result<WordsDictionary> {
         let raw = include_str!(concat!(env!("CARGO_MANIFEST_DIR"), "/data/english.json"));
         let words = deserialize_json(raw)?;
@@ -18,6 +20,7 @@ pub mod english {
 pub mod spanish {
     use super::*;
 
+    /// Build a 2048-word WordsDictionary of Spanish words.
     pub fn get_dict() -> Result<WordsDictionary> {
         let raw = include_str!(concat!(env!("CARGO_MANIFEST_DIR"), "/data/spanish.json"));
         let words = deserialize_json(raw)?;
