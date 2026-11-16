@@ -29,7 +29,7 @@ impl WordsDictionary {
         Ok(WordsDictionary { words: words })
     }
 
-    pub fn get(&self, length: usize, index: usize) -> Result<String> {
+    fn get(&self, length: usize, index: usize) -> Result<String> {
         match self.words.get(&length) {
             Some(vec) => match vec.get(index) {
                 Some(word) => Ok(word.clone()),
