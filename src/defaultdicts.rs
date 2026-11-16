@@ -1,4 +1,4 @@
-use crate::dictionary::WordsDictionary;
+use crate::WordsDictionary;
 use crate::utils::deserialize_json;
 type Result<T> = std::result::Result<T, crate::Error>;
 
