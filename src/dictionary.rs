@@ -18,14 +18,10 @@ impl WordsDictionary {
         }
         let mut words: HashMap<usize, Vec<String>> = HashMap::new();
         for word in raw_words {
-            match words.get_mut(&word.len()) {
-                Some(vec) => vec.push(word),
-                None => {
-                    let length = word.len();
-                    let vec = vec![word];
-                    words.insert(length, vec);
-                }
-            }
+            words
+                .entry(word.len())
+                .or_insert(Vec::<String>::new())
+                .push(word);
         }
         Ok(WordsDictionary { words: words })
     }
@@ -45,10 +41,7 @@ impl WordsDictionary {
     pub fn get_random(&self) -> Result<String> {
         let lengths: Vec<usize> = self.words.keys().copied().collect();
         if let Some(rand_len) = rng::from_values(&lengths) {
-            self.get(
-                rand_len,
-                rng::in_range(self.words.get(&rand_len).unwrap().len()),
-            )
+            self.get_random_with_len(rand_len)
         } else {
             Err(DictionaryError::EmptyVec)
         }
@@ -56,8 +49,17 @@ impl WordsDictionary {
 
     /// Get any word from the dictionary that matches the provided length
     /// with a randomly generated index.
-    pub fn get_random_with_len(&self, len: usize) -> Result<String> {
-        self.get(len, rng::in_range(self.words.get(&len).unwrap().len()))
+    pub fn get_random_with_len(&self, word_len: usize) -> Result<String> {
+        match self.words.get(&word_len) {
+            Some(vec) => {
+                let vec_len = vec.len();
+                match vec_len {
+                    0 => Err(DictionaryError::InvalidLength(word_len)),
+                    _ => self.get(word_len, rng::in_range(vec_len)),
+                }
+            }
+            None => Err(DictionaryError::InvalidLength(word_len)),
+        }
     }
 }
 

@@ -3,7 +3,7 @@ use std::{error, fmt};
 /// Represents all errors that might take place when dealing with [dictionaries](crate::WordsDictionary).
 #[derive(Debug, PartialEq)]
 pub enum DictionaryError {
-    /// Happens when trying to create a dictionary using an empty vector.
+    /// Happens when an operation that requires at least one element doesn't have access to one.
     EmptyVec,
     /// Takes place when using a length that has no matching words.
     InvalidLength(usize),
