@@ -1,4 +1,3 @@
-//! Generate indices for getting random words
 pub fn from_values<T>(vals: &Vec<T>) -> Option<T>
 where
     T: Clone,

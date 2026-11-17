@@ -33,6 +33,8 @@
 //! println!("{random_word}");
 //! ```
 
+#![warn(missing_docs)]
+
 #![cfg_attr(docsrs, feature(doc_cfg))]
 #[cfg(feature = "defaultdicts")]
 pub mod defaultdicts;
