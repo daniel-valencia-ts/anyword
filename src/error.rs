@@ -12,22 +12,13 @@ pub enum DictionaryError {
     InvalidIndex(usize),
 }
 
-/// Represents errors in I/O and [serde](https://crates.io/crates/serde_json) operations.
-#[derive(Debug)]
-pub enum DeserializationError {
-    /// Happens when something goes wrong while reading the content of a file.
-    IOError(std::io::Error),
-    /// Occurs when an error takes place when attempting to deserialize the contents of a file.
-    SerdeError(serde_json::error::Error),
-}
-
 /// A type that represents every error that could occur when using this crate.
 #[derive(Debug)]
 pub enum Error {
     /// Takes place when an operation related to dictionaries goes wrong.
     DictionaryError(DictionaryError),
     /// Occurs when an operation concerning deserialization fails.
-    DeserializationError(DeserializationError),
+    DeserializationError(serde_json::error::Error),
 }
 
 impl fmt::Display for DictionaryError {
@@ -45,40 +36,6 @@ impl fmt::Display for DictionaryError {
 }
 
 impl error::Error for DictionaryError {}
-
-impl fmt::Display for DeserializationError {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            DeserializationError::IOError(..) => {
-                write!(f, "an error occurred while opening the file")
-            }
-            DeserializationError::SerdeError(..) => {
-                write!(f, "couldn't deserialize the contents of the file")
-            }
-        }
-    }
-}
-
-impl error::Error for DeserializationError {
-    fn source(&self) -> Option<&(dyn error::Error + 'static)> {
-        match self {
-            DeserializationError::IOError(e) => Some(e),
-            DeserializationError::SerdeError(e) => Some(e),
-        }
-    }
-}
-
-impl From<std::io::Error> for DeserializationError {
-    fn from(err: std::io::Error) -> DeserializationError {
-        DeserializationError::IOError(err)
-    }
-}
-
-impl From<serde_json::error::Error> for DeserializationError {
-    fn from(err: serde_json::error::Error) -> DeserializationError {
-        DeserializationError::SerdeError(err)
-    }
-}
 
 impl fmt::Display for Error {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -108,8 +65,8 @@ impl From<DictionaryError> for Error {
     }
 }
 
-impl From<DeserializationError> for Error {
-    fn from(err: DeserializationError) -> Error {
+impl From<serde_json::error::Error> for Error {
+    fn from(err: serde_json::error::Error) -> Error {
         Error::DeserializationError(err)
     }
 }
