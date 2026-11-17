@@ -23,11 +23,10 @@
 //! or `spanish` might be activated to have access to dictionaries with a set of words in those languages.
 //!
 //! ```
-//! use anyword::defaultdicts;
 //! use anyword::WordsDictionary;
 //!
 //! // The "english" feature must be enabled for this to work.
-//! let english_dict: WordsDictionary = defaultdicts::english::get_dict().unwrap();
+//! let english_dict: WordsDictionary = anyword::get_english_dict().unwrap();
 //!
 //! let random_word: String = english_dict.get_random().unwrap();
 //! println!("{random_word}");
@@ -35,12 +34,14 @@
 
 #![warn(missing_docs)]
 #![cfg_attr(docsrs, feature(doc_cfg))]
-#[cfg(feature = "defaultdicts")]
-pub mod defaultdicts;
+#[cfg(any(feature = "english", feature = "spanish"))]
+mod defaultdicts;
 mod dictionary;
 mod error;
 mod rng;
 mod utils;
 
+#[cfg(any(feature = "english", feature = "spanish"))]
+pub use defaultdicts::*;
 pub use dictionary::*;
 pub use error::*;

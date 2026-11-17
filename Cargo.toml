@@ -4,9 +4,8 @@ version = "0.1.0"
 edition = "2024"
 
 [features]
-defaultdicts = []
-english = ["defaultdicts"]
-spanish = ["defaultdicts"]
+english = []
+spanish = []
 
 [dependencies]
 rand = "0.10.3"
