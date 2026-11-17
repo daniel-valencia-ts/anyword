@@ -2,7 +2,7 @@ use crate::WordsDictionary;
 use crate::utils::deserialize_json;
 type Result<T> = std::result::Result<T, crate::Error>;
 
-/// Build a 2048-word WordsDictionary of English words.
+/// Build a 2048-word [`WordsDictionary`] of English words.
 ///
 /// # Example
 ///
@@ -23,7 +23,7 @@ pub fn get_english_dict() -> Result<WordsDictionary> {
     Ok(WordsDictionary::new(words)?)
 }
 
-/// Build a 2048-word WordsDictionary of Spanish words.
+/// Build a 2048-word [`WordsDictionary`] of Spanish words.
 ///
 /// # Example
 ///

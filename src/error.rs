@@ -1,21 +1,21 @@
 use std::{error, fmt};
 
-/// Represents all errors that might take place when dealing with [dictionaries](crate::WordsDictionary).
+/// Represents all errors that might take place when dealing with [`dictionaries`](crate::WordsDictionary).
 #[derive(Debug, PartialEq)]
 pub enum DictionaryError {
-    /// Happens when an operation that requires at least one element doesn't have access to one.
+    /// Happens when an operation that requires at least one element doesn't have access to any.
     EmptyVec,
     /// Takes place when using a length that has no matching words.
     InvalidLength(usize),
     /// Occurs when attempting to access an index that is out of bounds in one of the
-    /// dictionary's underlying vectors.
+    /// `dictionary's` underlying vectors.
     InvalidIndex(usize),
 }
 
 /// A type that represents every error that could occur when using this crate.
 #[derive(Debug)]
 pub enum Error {
-    /// Takes place when an operation related to dictionaries goes wrong.
+    /// Takes place when an operation related to `dictionaries` goes wrong.
     DictionaryError(DictionaryError),
     /// Occurs when an operation concerning deserialization fails.
     DeserializationError(serde_json::error::Error),

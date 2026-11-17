@@ -2,9 +2,10 @@
 //!
 //! # Quick Start
 //!
-//! This crate introduces the [WordsDictionary] struct, which stores a collection of words separated by length.
-//! The [get_random](WordsDictionary::get_random) method is used to get a random word, whereas
-//! [get_random_with_len](WordsDictionary::get_random_with_len) can be employed to
+//! This crate introduces the [`WordsDictionary`] struct (also referred simply as "`dictionary`"
+//! throughout this documentation), which stores a collection of words separated by length.
+//! The [`get_random`](WordsDictionary::get_random) method is used to get a random word, whereas
+//! [`get_random_with_len`](WordsDictionary::get_random_with_len) can be employed to
 //! only get strings that match the specified length.
 //!
 //! ```
@@ -20,7 +21,7 @@
 //! # Built-in Dictionaries
 //!
 //! Optionally, [features](https://doc.rust-lang.org/cargo/reference/features.html) such as `english`
-//! or `spanish` might be activated to have access to dictionaries with a set of words in those languages.
+//! or `spanish` might be activated to have access to `dictionaries` with a set of words in those languages.
 //!
 //! ```
 //! use anyword::WordsDictionary;

@@ -11,7 +11,34 @@ pub struct WordsDictionary {
 }
 
 impl WordsDictionary {
-    /// Create a new dictionary with the supplied list of words.
+    /// Create a new `dictionary` with the supplied list of words.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use anyword::WordsDictionary;
+    ///
+    /// fn main() -> Result<(), anyword::DictionaryError> {
+    ///     let words: Vec<String> = vec![
+    ///         "sofa",
+    ///         "chair",
+    ///         "cushion",
+    ///         "table"
+    ///     ]
+    ///     .into_iter()
+    ///     .map(|str| str.to_string())
+    ///     .collect();
+    ///     let dict: WordsDictionary = WordsDictionary::new(words)?;
+    ///
+    ///     println!("{}", dict.get_random()?);
+    ///     Ok(())
+    /// }
+    /// ```
+    ///
+    /// # Errors
+    ///
+    /// In order to create a new dictionary, a vector of [`String`]s with at least one element must
+    /// be supplied. Otherwise, an [`EmptyVec`](DictionaryError::EmptyVec) error will be yielded.
     pub fn new(raw_words: Vec<String>) -> Result<Self> {
         if raw_words.len() == 0 {
             return Err(DictionaryError::EmptyVec);
@@ -36,8 +63,13 @@ impl WordsDictionary {
         }
     }
 
-    /// Get any word from the dictionary with a randomly generated
+    /// Get any word from the `dictionary` with a randomly generated
     /// length and index.
+    ///
+    /// # Errors
+    ///
+    /// If there are no values to choose from, an [`EmptyVec`](DictionaryError::EmptyVec)
+    /// error will be returned.
     pub fn get_random(&self) -> Result<String> {
         let lengths: Vec<usize> = self.words.keys().copied().collect();
         if let Some(rand_len) = rng::from_values(&lengths) {
@@ -47,8 +79,34 @@ impl WordsDictionary {
         }
     }
 
-    /// Get any word from the dictionary that matches the provided length
+    /// Get any word from the `dictionary` that matches the provided length
     /// with a randomly generated index.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use anyword::WordsDictionary;
+    ///
+    /// fn main() -> Result<(), anyword::DictionaryError> {
+    ///     let words: Vec<String> = vec![
+    ///         "fork",
+    ///         "knife",
+    ///         "spoon",
+    ///     ]
+    ///     .into_iter()
+    ///     .map(|str| str.to_string())
+    ///     .collect();
+    ///     let dict: WordsDictionary = WordsDictionary::new(words)?;
+    ///
+    ///     assert_eq!(dict.get_random_with_len(4)?, "fork".to_string());
+    ///     Ok(())
+    /// }
+    /// ```
+    ///
+    /// # Errors
+    ///
+    /// If there are no words that match the given length, an [`InvalidLength`](DictionaryError::InvalidLength)
+    /// error will be returned.
     pub fn get_random_with_len(&self, word_len: usize) -> Result<String> {
         match self.words.get(&word_len) {
             Some(vec) => {
