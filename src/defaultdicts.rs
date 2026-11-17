@@ -1,3 +1,19 @@
+//! Default implementations of [WordsDictionary] in several languages.
+//!
+//! In order to use them, activate the feature flag of the language you want to use in the **Cargo.toml`
+//! file at the root of your package.
+//!
+//! # Example
+//!
+//! ```
+//! use anyword::defaultdicts;
+//! use anyword::WordsDictionary;
+//!
+//! let spanish_dict = defaultdicts::spanish::get_dict().unwrap();
+//! for i in 0..64 {
+//!     println!("word number {i}: {}", spanish_dict.get_random().unwrap());
+//! }
+//! ```
 use crate::WordsDictionary;
 use crate::utils::deserialize_json;
 type Result<T> = std::result::Result<T, crate::Error>;
