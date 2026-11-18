@@ -35,14 +35,14 @@
 
 #![warn(missing_docs)]
 #![cfg_attr(docsrs, feature(doc_cfg))]
-#[cfg(any(feature = "english", feature = "spanish"))]
+#[cfg(any(feature = "english", feature = "spanish", feature = "french"))]
 mod defaultdicts;
 mod dictionary;
 mod error;
 mod rng;
 mod utils;
 
-#[cfg(any(feature = "english", feature = "spanish"))]
+#[cfg(any(feature = "english", feature = "spanish", feature = "french"))]
 pub use defaultdicts::*;
 pub use dictionary::*;
 pub use error::*;

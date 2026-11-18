@@ -1,6 +1,6 @@
 [package]
 name = "anyword"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2024"
 authors = ["Daniel Valencia"]
 description = "Get random words from default lists or custom-made ones"
@@ -12,6 +12,7 @@ categories = ["development-tools", "data-structures"]
 [features]
 english = []
 spanish = []
+french = []
 
 [dependencies]
 rand = "0.10.3"

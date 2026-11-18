@@ -21,3 +21,13 @@ fn spanish_dict() -> Result<()> {
     }
     Ok(())
 }
+
+#[cfg(feature = "french")]
+#[test]
+fn french_dict() -> Result<()> {
+    let french_dict = anyword::get_french_dict()?;
+    for _ in 0..100 {
+        assert!(french_dict.get_random().is_ok())
+    }
+    Ok(())
+}

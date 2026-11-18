@@ -44,6 +44,27 @@ pub fn get_spanish_dict() -> Result<WordsDictionary> {
     Ok(WordsDictionary::new(words)?)
 }
 
+/// Build a 2048-word [`WordsDictionary`] of French words.
+///
+/// # Example
+///
+/// ```
+/// use anyword::WordsDictionary;
+///
+/// let french_dict: WordsDictionary = anyword::get_french_dict().unwrap();
+/// for i in 0..64 {
+///     println!("word number {i}: {}", french_dict.get_random().unwrap());
+/// }
+/// ```
+#[cfg(feature = "french")]
+#[cfg_attr(docsrs, doc(cfg(feature = "french")))]
+pub fn get_french_dict() -> Result<WordsDictionary> {
+    let raw = include_str!(concat!(env!("CARGO_MANIFEST_DIR"), "/data/french.json"));
+    let words = deserialize_json(raw)?;
+
+    Ok(WordsDictionary::new(words)?)
+}
+
 #[cfg(test)]
 mod test {
     use super::*;
@@ -61,6 +82,14 @@ mod test {
     fn random_spanish_word() -> Result<()> {
         let spanish_dict = get_spanish_dict()?;
         assert!(spanish_dict.get_random().is_ok());
+        Ok(())
+    }
+
+    #[cfg(feature = "french")]
+    #[test]
+    fn random_french_word() -> Result<()> {
+        let french_dict = get_french_dict()?;
+        assert!(french_dict.get_random().is_ok());
         Ok(())
     }
 }
