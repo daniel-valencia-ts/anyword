@@ -2,6 +2,12 @@
 name = "anyword"
 version = "0.1.0"
 edition = "2024"
+authors = ["Daniel Valencia"]
+description = "Get random words from default lists or custom-made ones"
+license = "MIT"
+repository = "https://github.com/daniel-valencia-ts/anyword"
+keywords = ["random", "word", "rand"]
+categories = ["development-tools", "data-structures"]
 
 [features]
 english = []
