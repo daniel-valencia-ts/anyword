@@ -5,7 +5,7 @@ where
     let length = vals.len();
     match length {
         0 => None,
-        _ => Some(vals.get(rand::random_range(..length)).unwrap().clone()),
+        _ => Some(vals.get(in_range(length)).unwrap().clone()),
     }
 }
 

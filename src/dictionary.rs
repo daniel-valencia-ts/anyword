@@ -1,13 +1,14 @@
 use crate::DictionaryError;
 use crate::rng;
 use std::collections::HashMap;
+use std::collections::HashSet;
 
 type Result<T> = std::result::Result<T, DictionaryError>;
 
 /// A struct that stores words grouped by their length.
 #[derive(Debug, PartialEq)]
 pub struct WordsDictionary {
-    words: HashMap<usize, Vec<String>>,
+    words: HashMap<usize, HashSet<String>>,
 }
 
 impl WordsDictionary {
@@ -43,24 +44,14 @@ impl WordsDictionary {
         if raw_words.len() == 0 {
             return Err(DictionaryError::EmptyVec);
         }
-        let mut words: HashMap<usize, Vec<String>> = HashMap::new();
+        let mut words: HashMap<usize, HashSet<String>> = HashMap::new();
         for word in raw_words {
             words
                 .entry(word.len())
-                .or_insert(Vec::<String>::new())
-                .push(word);
+                .or_insert(HashSet::<String>::new())
+                .insert(word);
         }
         Ok(WordsDictionary { words: words })
-    }
-
-    fn get(&self, length: usize, index: usize) -> Result<String> {
-        match self.words.get(&length) {
-            Some(vec) => match vec.get(index) {
-                Some(word) => Ok(word.clone()),
-                None => Err(DictionaryError::InvalidIndex(index)),
-            },
-            None => Err(DictionaryError::InvalidLength(length)),
-        }
     }
 
     /// Get any word from the `dictionary` with a randomly generated
@@ -68,14 +59,14 @@ impl WordsDictionary {
     ///
     /// # Errors
     ///
-    /// If there are no values to choose from, an [`EmptyVec`](DictionaryError::EmptyVec)
+    /// If there are no values to choose from, an [`EmptyDictionary`](DictionaryError::EmptyDictionary)
     /// error will be returned.
     pub fn get_random(&self) -> Result<String> {
         let lengths: Vec<usize> = self.words.keys().copied().collect();
         if let Some(rand_len) = rng::from_values(&lengths) {
             self.get_random_with_len(rand_len)
         } else {
-            Err(DictionaryError::EmptyVec)
+            Err(DictionaryError::EmptyDictionary)
         }
     }
 
@@ -109,11 +100,11 @@ impl WordsDictionary {
     /// error will be returned.
     pub fn get_random_with_len(&self, word_len: usize) -> Result<String> {
         match self.words.get(&word_len) {
-            Some(vec) => {
-                let vec_len = vec.len();
-                match vec_len {
+            Some(set) => {
+                let set_len = set.len();
+                match set_len {
                     0 => Err(DictionaryError::InvalidLength(word_len)),
-                    _ => self.get(word_len, rng::in_range(vec_len)),
+                    _ => Ok(rng::from_values(&set.iter().collect()).unwrap().clone()),
                 }
             }
             None => Err(DictionaryError::InvalidLength(word_len)),
@@ -128,14 +119,10 @@ mod tests {
 
     #[test]
     fn create_new() {
-        let raw_words = vec![String::from("apple"), String::from("basketball")];
+        let raw_words = vec![String::from("apple")];
         let dict = WordsDictionary::new(raw_words).unwrap();
 
-        assert_eq!(dict.get(5, 0), Ok(String::from("apple")));
-        assert_eq!(
-            dict.get(usize::MAX, usize::MAX),
-            Err(DictionaryError::InvalidLength(usize::MAX))
-        );
+        assert_eq!(dict.get_random(), Ok(String::from("apple")));
     }
 
     #[test]

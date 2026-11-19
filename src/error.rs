@@ -5,11 +5,10 @@ use std::{error, fmt};
 pub enum DictionaryError {
     /// Happens when an operation that requires at least one element doesn't have access to any.
     EmptyVec,
+    /// Occurs when attempting to retrieve a value when none is available.
+    EmptyDictionary,
     /// Takes place when using a length that has no matching words.
     InvalidLength(usize),
-    /// Occurs when attempting to access an index that is out of bounds in one of the
-    /// `dictionary's` underlying vectors.
-    InvalidIndex(usize),
 }
 
 /// A type that represents every error that could occur when using this crate.
@@ -25,11 +24,9 @@ impl fmt::Display for DictionaryError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
             DictionaryError::EmptyVec => write!(f, "the vector must have at least one element"),
+            DictionaryError::EmptyDictionary => write!(f, "the dictionary is empty"),
             DictionaryError::InvalidLength(len) => {
                 write!(f, "no strings match the given length: {len}")
-            }
-            DictionaryError::InvalidIndex(idx) => {
-                write!(f, "no string at the target index: {idx}")
             }
         }
     }
