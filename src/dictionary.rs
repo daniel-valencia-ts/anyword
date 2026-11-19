@@ -175,9 +175,9 @@ impl WordsDictionary {
     }
 
     /// Return whether the target word is present in the `dictionary` or not.
-    pub fn contains(&self, target_word: String) -> bool {
+    pub fn contains(&self, target_word: &str) -> bool {
         match self.words.get(&target_word.len()) {
-            Some(entry) => entry.contains(&target_word),
+            Some(entry) => entry.contains(target_word),
             None => false,
         }
     }
@@ -193,7 +193,7 @@ mod tests {
         let raw_words = vec![String::from("apple")];
         let dict = WordsDictionary::new(raw_words).unwrap();
 
-        assert!(dict.contains("apple".into()));
+        assert!(dict.contains("apple"));
     }
 
     #[test]

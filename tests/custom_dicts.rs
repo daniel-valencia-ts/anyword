@@ -74,7 +74,7 @@ fn removal_and_insertion() -> Result<()> {
 
     dict.remove("tomato");
 
-    assert!(dict.contains("cheese".into()));
-    assert!(!dict.contains("tomato".into()));
+    assert!(dict.contains("cheese"));
+    assert!(!dict.contains("tomato"));
     Ok(())
 }
