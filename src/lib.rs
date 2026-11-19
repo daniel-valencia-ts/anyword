@@ -12,7 +12,7 @@
 //! use anyword::WordsDictionary;
 //!
 //! let raw_words: Vec<String> = vec![String::from("crab"), String::from("penguin"), String::from("bear")];
-//! let dict: WordsDictionary = WordsDictionary::new(raw_words).unwrap();
+//! let dict: WordsDictionary = WordsDictionary::new(raw_words);
 //!
 //! let random_word: String = dict.get_random().unwrap();
 //! println!("{random_word}"); // Could be "crab," "penguin," or "bear."

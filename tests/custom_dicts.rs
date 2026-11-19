@@ -18,7 +18,7 @@ fn random_food() -> Result<()> {
     .into_iter()
     .map(|f| f.to_string())
     .collect();
-    let food_dict = WordsDictionary::new(raw_words)?;
+    let food_dict = WordsDictionary::new(raw_words);
 
     for _ in 0..3 {
         println!("{}", food_dict.get_random()?);
@@ -38,7 +38,7 @@ fn random_sport() -> Result<()> {
     .into_iter()
     .map(|f| f.to_string())
     .collect();
-    let food_dict = WordsDictionary::new(raw_words)?;
+    let food_dict = WordsDictionary::new(raw_words);
 
     println!("{}", food_dict.get_random()?);
     Ok(())
@@ -50,7 +50,7 @@ fn random_with_length() -> Result<()> {
         .into_iter()
         .map(|f| f.to_string())
         .collect();
-    let dict = WordsDictionary::new(raw_words)?;
+    let dict = WordsDictionary::new(raw_words);
 
     assert_eq!(String::from("shoe"), dict.get_random_with_len(4)?);
     assert!(dict.get_random_with_len(usize::MAX).is_err());
@@ -60,15 +60,16 @@ fn random_with_length() -> Result<()> {
 #[test]
 fn empty_vec() {
     let vec = Vec::<String>::new();
-    assert_eq!(
-        WordsDictionary::new(vec),
-        Err(anyword::DictionaryError::EmptyVec)
-    );
+    let mut dict = WordsDictionary::new(vec);
+    assert!(dict.get_random().is_err());
+
+    dict.add("jinx".into());
+    assert_eq!(dict.get_random().unwrap(), String::from("jinx"));
 }
 
 #[test]
 fn removal_and_insertion() -> Result<()> {
-    let mut dict = WordsDictionary::new(vec!["tomato".into()])?;
+    let mut dict = WordsDictionary::new(vec!["tomato".into()]);
     dict.add("potato".into());
     dict.add("cheese".into());
 

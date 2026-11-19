@@ -29,21 +29,13 @@ impl WordsDictionary {
     ///     .into_iter()
     ///     .map(|str| str.to_string())
     ///     .collect();
-    ///     let dict: WordsDictionary = WordsDictionary::new(words)?;
+    ///     let dict: WordsDictionary = WordsDictionary::new(words);
     ///
     ///     println!("{}", dict.get_random()?);
     ///     Ok(())
     /// }
     /// ```
-    ///
-    /// # Errors
-    ///
-    /// In order to create a new dictionary, a vector of [`String`]s with at least one element must
-    /// be supplied. Otherwise, an [`EmptyVec`](DictionaryError::EmptyVec) error will be yielded.
-    pub fn new(raw_words: Vec<String>) -> Result<Self> {
-        if raw_words.len() == 0 {
-            return Err(DictionaryError::EmptyVec);
-        }
+    pub fn new(raw_words: Vec<String>) -> Self {
         let mut words: HashMap<usize, HashSet<String>> = HashMap::new();
         for word in raw_words {
             words
@@ -51,7 +43,7 @@ impl WordsDictionary {
                 .or_insert(HashSet::<String>::new())
                 .insert(word);
         }
-        Ok(WordsDictionary { words: words })
+        WordsDictionary { words: words }
     }
 
     /// Get any word from the `dictionary` with a randomly generated
@@ -87,7 +79,7 @@ impl WordsDictionary {
     ///     .into_iter()
     ///     .map(|str| str.to_string())
     ///     .collect();
-    ///     let dict: WordsDictionary = WordsDictionary::new(words)?;
+    ///     let dict: WordsDictionary = WordsDictionary::new(words);
     ///
     ///     assert_eq!(dict.get_random_with_len(4)?, "fork".to_string());
     ///     Ok(())
@@ -123,7 +115,7 @@ impl WordsDictionary {
     /// use anyword::WordsDictionary;
     ///
     /// fn run() -> Result<(), anyword::DictionaryError> {
-    ///     let mut dict: WordsDictionary = WordsDictionary::new(vec!["default".into()])?;
+    ///     let mut dict: WordsDictionary = WordsDictionary::new(vec!["default".into()]);
     ///     for _ in 0..10 {
     ///         let user_input: String = get_user_input();
     ///         dict.add(user_input);
@@ -157,7 +149,7 @@ impl WordsDictionary {
     ///     .into_iter()
     ///     .map(|str| str.to_string())
     ///     .collect();
-    ///     let mut dict: WordsDictionary = WordsDictionary::new(words)?;
+    ///     let mut dict: WordsDictionary = WordsDictionary::new(words);
     ///
     ///     assert_eq!(dict.get_random_with_len(4)?, "fork".to_string());
     ///
@@ -191,15 +183,18 @@ mod tests {
     #[test]
     fn create_new() {
         let raw_words = vec![String::from("apple")];
-        let dict = WordsDictionary::new(raw_words).unwrap();
+        let dict = WordsDictionary::new(raw_words);
 
         assert!(dict.contains("apple"));
     }
 
     #[test]
     fn create_empty() {
-        let empty_dict = WordsDictionary::new(Vec::<String>::new());
-        assert_eq!(empty_dict, Err(DictionaryError::EmptyVec));
+        let mut dict = WordsDictionary::new(Vec::<String>::new());
+        assert!(dict.get_random().is_err());
+
+        dict.add(String::from("bazinga"));
+        assert!(dict.get_random().is_ok());
     }
 
     #[test]
@@ -211,7 +206,7 @@ mod tests {
             String::from("apolo"),
             String::from("flipside"),
         ];
-        let dict = WordsDictionary::new(raw_words).unwrap();
+        let dict = WordsDictionary::new(raw_words);
 
         assert!(dict.get_random().is_ok())
     }
@@ -224,7 +219,7 @@ mod tests {
             String::from("ikigai"),
             String::from("map"),
         ];
-        let dict = WordsDictionary::new(raw_words).unwrap();
+        let dict = WordsDictionary::new(raw_words);
 
         assert_eq!(dict.get_random_with_len(3).unwrap(), String::from("map"));
     }
@@ -232,7 +227,7 @@ mod tests {
     #[test]
     fn modifying_dicts() {
         let raw_words = vec!["cpu".into(), "memory".into(), "ssd".into(), "hdd".into()];
-        let mut dict = WordsDictionary::new(raw_words).unwrap();
+        let mut dict = WordsDictionary::new(raw_words);
         assert!(dict.add("usb".into()));
         assert!(dict.remove("hdd".into()));
     }
