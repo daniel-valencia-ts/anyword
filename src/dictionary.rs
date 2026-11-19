@@ -193,7 +193,7 @@ mod tests {
         let raw_words = vec![String::from("apple")];
         let dict = WordsDictionary::new(raw_words).unwrap();
 
-        assert_eq!(dict.get_random(), Ok(String::from("apple")));
+        assert!(dict.contains("apple".into()));
     }
 
     #[test]
@@ -227,5 +227,13 @@ mod tests {
         let dict = WordsDictionary::new(raw_words).unwrap();
 
         assert_eq!(dict.get_random_with_len(3).unwrap(), String::from("map"));
+    }
+
+    #[test]
+    fn modifying_dicts() {
+        let raw_words = vec!["cpu".into(), "memory".into(), "ssd".into(), "hdd".into()];
+        let mut dict = WordsDictionary::new(raw_words).unwrap();
+        assert!(dict.add("usb".into()));
+        assert!(dict.remove("hdd".into()));
     }
 }

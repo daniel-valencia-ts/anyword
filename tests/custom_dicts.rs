@@ -65,3 +65,16 @@ fn empty_vec() {
         Err(anyword::DictionaryError::EmptyVec)
     );
 }
+
+#[test]
+fn removal_and_insertion() -> Result<()> {
+    let mut dict = WordsDictionary::new(vec!["tomato".into()])?;
+    dict.add("potato".into());
+    dict.add("cheese".into());
+
+    dict.remove("tomato");
+
+    assert!(dict.contains("cheese".into()));
+    assert!(!dict.contains("tomato".into()));
+    Ok(())
+}
