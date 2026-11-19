@@ -11,11 +11,14 @@
 //! ```
 //! use anyword::WordsDictionary;
 //!
-//! let raw_words: Vec<String> = vec![String::from("crab"), String::from("penguin"), String::from("bear")];
-//! let dict: WordsDictionary = WordsDictionary::new(raw_words);
+//! fn print_random_word() -> Result<(), anyword::Error> {
+//!     let raw_words: Vec<String> = vec!["crab".into(), "penguin".into(), "bear".into()];
+//!     let dict: WordsDictionary = WordsDictionary::new(raw_words);
 //!
-//! let random_word: String = dict.get_random().unwrap();
-//! println!("{random_word}"); // Could be "crab," "penguin," or "bear."
+//!     let random_word: String = dict.get_random()?;
+//!     println!("{random_word}"); // Could be "crab," "penguin," or "bear."
+//!     Ok(())
+//! }
 //! ```
 //!
 //! # Built-in Dictionaries
@@ -26,11 +29,15 @@
 //! ```
 //! use anyword::WordsDictionary;
 //!
-//! // The "english" feature must be enabled for this to work.
-//! let english_dict: WordsDictionary = anyword::get_english_dict().unwrap();
+//! fn print_english_words() -> Result<(), anyword::Error> {
+//!     // The "english" feature must be enabled for this to work.
+//!     let english_dict: WordsDictionary = anyword::get_english_dict()?;
 //!
-//! let random_word: String = english_dict.get_random().unwrap();
-//! println!("{random_word}");
+//!     for _ in 0..16 {
+//!         println!("{}", english_dict.get_random()?)
+//!     }
+//!     Ok(())
+//! }
 //! ```
 
 #![warn(missing_docs)]
